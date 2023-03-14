@@ -1,16 +1,14 @@
 const connection = require("../config/db-config");
 
 const getAllEmployees = async () => {
-  const rows = await connection
-    .query("SELECT * FROM employees e")
-    .spread((rows) => rows);
+  const sentence = "SELECT * FROM employees e";
+  const rows = await connection.query(sentence).spread((rows) => rows);
   return rows;
 };
 
 const getEmployeeById = async (id) => {
-  const rows = await connection
-    .query(`SELECT * FROM employees e WHERE e.id_employee = ${id}`)
-    .spread((rows) => rows);
+  const sentence = `SELECT * FROM employees e WHERE e.id_employee = ${id}`;
+  const rows = await connection.query(sentence).spread((rows) => rows);
   return rows.length > 0 ? rows[0] : [];
 };
 

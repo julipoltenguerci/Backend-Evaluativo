@@ -1,25 +1,20 @@
 const connection = require("../config/db-config");
 
 const getAllAssets = async () => {
-  const rows = await connection
-    .query("SELECT * FROM assets")
-    .spread((rows) => rows);
+  const sentence = "SELECT * FROM assets";
+  const rows = await connection.query(sentence).spread((rows) => rows);
   return rows;
 };
 
 const getAssetById = async (id) => {
-  const row = await connection
-    .query(`SELECT * FROM assets a WHERE a.id_asset = ${id}`)
-    .spread((row) => row);
+  const sentence = `SELECT * FROM assets a WHERE a.id_asset = ${id}`;
+  const row = await connection.query(sentence).spread((row) => row);
   return row;
 };
 
 const getAssetsByEmployeeId = async (id) => {
-  const rows = await connection
-    .query(
-      `SELECT * FROM assets a JOIN employees e ON a.id_employee = e.id_employee WHERE a.id_employee = ${id}`
-    )
-    .spread((rows) => rows);
+  const sentence = `SELECT * FROM assets a JOIN employees e ON a.id_employee = e.id_employee WHERE a.id_employee = ${id}`;
+  const rows = await connection.query(sentence).spread((rows) => rows);
   return rows;
 };
 

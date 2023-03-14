@@ -28,7 +28,7 @@ const updateEmployee = async (req, res) => {
 };
 
 const deleteEmployee = async (req, res) => {
-  //const { id } = req.params;
+  const { id } = req.params;
   const result = await employeeModel.deleteEmployee(id);
   res.json({ data: id });
 };
