@@ -1,8 +1,23 @@
 const assetModel = require("../models/asset-model");
 
-const getAllAssets = async (req, res) => {
-  const assets = await assetModel.getAllAssets();
-  res.json({ data: assets });
+const url = require("url");
+const querystring = require("querystring");
+
+const getAllAssets = async (req, res, next) => {
+  try {
+    const parsedUrl = url.parse(req.url);
+    const parsedQuery = querystring.parse(parsedUrl.query);
+
+    const assets = await assetModel.getAllAssets(parsedQuery);
+    if (assets.length === 0) {
+      res.json(
+        handleHttpError(res, "No se encontraron activos disponibles.", 404)
+      );
+    }
+    res.json({ data: assets });
+  } catch (e) {
+    next(e);
+  }
 };
 
 const getAssetById = async (req, res) => {

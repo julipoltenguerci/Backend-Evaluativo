@@ -1,7 +1,12 @@
 const employeeRouter = require("express").Router();
 const employeeController = require("../controllers/employee-controller");
 
-const { createEmployeeValidator } = require("../validators/employee");
+const {
+  createEmployeeValidator,
+  updateEmployeeValidator,
+} = require("../validators/employeeValidator");
+
+//Paths para rutas de employees
 
 employeeRouter
   .route("/")
@@ -12,6 +17,6 @@ employeeRouter
   .route("/:idE")
   .get(employeeController.getEmployeeById)
   .delete(employeeController.deleteEmployee)
-  .put(employeeController.updateEmployee);
+  .put(updateEmployeeValidator, employeeController.updateEmployee);
 
 module.exports = employeeRouter;
