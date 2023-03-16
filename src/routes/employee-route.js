@@ -1,10 +1,17 @@
 const employeeRouter = require("express").Router();
 const employeeController = require("../controllers/employee-controller");
 
-employeeRouter.get("/", employeeController.getAllEmployees);
-employeeRouter.get("/:id", employeeController.getEmployeeById);
-employeeRouter.post("/", employeeController.createEmployee);
-employeeRouter.delete("/:id", employeeController.deleteEmployee);
-employeeRouter.patch("/:id", employeeController.updateEmployee);
+const { createEmployeeValidator } = require("../validators/employee");
+
+employeeRouter
+  .route("/")
+  .get(employeeController.getAllEmployees)
+  .post(createEmployeeValidator, employeeController.createEmployee);
+
+employeeRouter
+  .route("/:idE")
+  .get(employeeController.getEmployeeById)
+  .delete(employeeController.deleteEmployee)
+  .put(employeeController.updateEmployee);
 
 module.exports = employeeRouter;

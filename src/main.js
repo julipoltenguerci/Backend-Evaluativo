@@ -16,4 +16,8 @@ app.use(express.json({ limit: "50mb" }));
 //routes
 app.use("/api/v1", routes);
 
+app.use((err, req, res, next) => {
+  res.status(500).send("Ha ocurrido un error en el servidor");
+});
+
 module.exports = app;

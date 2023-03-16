@@ -1,36 +1,58 @@
 const employeeModel = require("../models/employee-model");
+const { handleHttpError } = require("../utils/handleError");
 
-const getAllEmployees = async (req, res) => {
-  const queryParams = req.query;
-  const employees = await employeeModel.getAllEmployees(queryParams);
-  res.json({ data: employees });
-};
-
-const getEmployeeById = async (req, res) => {
-  const employee = await employeeModel.getEmployeeById(req.params.id);
-  res.json({ data: employee });
-};
-
-const createEmployee = async (req, res) => {
+const getAllEmployees = async (req, res, next) => {
   try {
-    const values = { ...req.body };
-    const result = await employeeModel.createEmployee(values);
-
-    res.json({ data: result });
-  } catch (error) {
-    res.status(500).json({ error: "Algo sucedió" });
+    const employees = await employeeModel.getAllEmployees(req);
+    res.json({ data: employees });
+  } catch (e) {
+    //handleHttpError(res, "No se encontraron empleados.");
+    next(e);
   }
 };
 
-const updateEmployee = async (req, res) => {
-  const result = await employeeModel.updateEmployee(req.body, req.params.id);
-  res.json({ data: result });
+const getEmployeeById = async (req, res, next) => {
+  try {
+    const employee = await employeeModel.getEmployeeById(req.params.idE);
+    res.json({ data: employee });
+  } catch (e) {
+    //handleHttpError(res, "No se encontró empleado con ese id.");
+    next(e);
+  }
 };
 
-const deleteEmployee = async (req, res) => {
-  const { id } = req.params;
-  const result = await employeeModel.deleteEmployee(id);
-  res.json({ data: id });
+const createEmployee = async (req, res, next) => {
+  try {
+    const values = { ...req.body };
+    const result = await employeeModel.createEmployee(values);
+    //console.log(result);
+    res.send(`Se ha creado correctamente un nuevo empleado con ID ${result}`);
+  } catch (e) {
+    //handleHttpError(res, "Error, no se pudo crear el empleado");
+    next(e);
+  }
+};
+
+const updateEmployee = async (req, res, next) => {
+  try {
+    const { idE } = req.params;
+    const result = await employeeModel.updateEmployee(req.body, idE);
+    res.send(`Se ha editado correctamente el empleado con ID ${idE}`);
+  } catch (e) {
+    //handleHttpError(res, "Error, no se pudo actualizar el empleado");
+    next(e);
+  }
+};
+
+const deleteEmployee = async (req, res, next) => {
+  try {
+    const { idE } = req.params;
+    const result = await employeeModel.deleteEmployee(idE);
+    res.send(`Se ha eliminado correctamente el empleado con ID ${idE}`);
+  } catch (e) {
+    //handleHttpError(res, "Error, no se pudo eliminar el empleado");
+    next(e);
+  }
 };
 
 module.exports = {
