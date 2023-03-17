@@ -20,10 +20,10 @@ Sistema de gestión de activos asignados a sus empleados que se encuentran traba
 
 3. Configurar las variables de entorno en archivo .env:
 
-- DB_HOST=
-- DB_NAME=
-- DB_USER=
-- API_PORT=
+- DB_HOST=localhost
+- DB_NAME=consultora_vortex_it
+- DB_USER=root
+- API_PORT=8000
 
 4. Ejecutar npm install en la terminal para instalar las dependencias.
 
