@@ -28,7 +28,7 @@ Sistema de gestión de activos asignados a sus empleados que se encuentran traba
 4. Ejecutar npm install en la terminal para instalar las dependencias.
 
 
-5. Ejecutar npm start en la terminal para iniciar la aplicación.
+5. Ejecutar npm run start:dev en la terminal para iniciar la aplicación.
 
 6. Aplicación disponible en http://localhost:8000
 
