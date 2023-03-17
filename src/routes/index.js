@@ -4,7 +4,7 @@ const employeeRoutes = require("./employee-route");
 const assetRoutes = require("./asset-route");
 
 //Rutas
-router.use("/employee", employeeRoutes);
-router.use("/asset", assetRoutes);
+router.use("/employees", employeeRoutes);
+router.use("/assets", assetRoutes);
 
 module.exports = router;

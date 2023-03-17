@@ -15,6 +15,7 @@ const getAllAssets = async (req) => {
   // Offset: Cálculo de tamaño de pagina
   const offset = (page - 1) * limit;
 
+  // Clausula where
   const where =
     filters &&
     Object.entries(filters)

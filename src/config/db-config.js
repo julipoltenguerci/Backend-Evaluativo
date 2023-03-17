@@ -13,14 +13,6 @@ const config = {
   database: process.env.DB_NAME,
 };
 
-db.configure((error) => {
-  if (!error) {
-    console.log("Se realizó con éxito la conexión");
-  } else {
-    throw error;
-  }
-});
-
 db.configure(config);
 
 module.exports = db;

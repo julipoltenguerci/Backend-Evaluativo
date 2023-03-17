@@ -18,6 +18,6 @@ assetRouter
   .put(updateAssetValidator, assetController.updateAsset)
   .delete(assetController.deleteAsset);
 
-assetRouter.get("/employee/:idE", assetController.getAssetsByEmployeeId);
+assetRouter.get("/employees/:idE", assetController.getAssetsByEmployeeId);
 
 module.exports = assetRouter;

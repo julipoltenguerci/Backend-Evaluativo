@@ -1,5 +1,5 @@
 const assetModel = require("../models/asset-model");
-const { HttpError, NotFoundError } = require("../customError/HttpError");
+const { HttpError, NotFoundError } = require("../customError/Http-Error");
 const ResponseApi = require("../utils/responseApi");
 
 // ---------- Funciones de Controlador de Employee ----------

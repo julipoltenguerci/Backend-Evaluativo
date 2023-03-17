@@ -22,12 +22,7 @@ const createAssetValidator = [
     .withMessage("El valor no es válido")
     .isLength({ min: 3, max: 50 })
     .withMessage("Escriba mínimo 3 caracteres y máximo 50"),
-  body("code")
-    .optional()
-    .notEmpty()
-    .withMessage("Campo no debe quedar vacio")
-    .isNumeric()
-    .withMessage("El campo debe ser numérico"),
+  body("code").optional().notEmpty().withMessage("Campo no debe quedar vacio"),
   body("brand")
     .exists()
     .withMessage("El campo es obligatorio")
@@ -78,12 +73,7 @@ const updateAssetValidator = [
     .withMessage("El valor no es válido")
     .isLength({ min: 3, max: 50 })
     .withMessage("Escriba mínimo 3 caracteres y máximo 50"),
-  body("code")
-    .optional()
-    .notEmpty()
-    .withMessage("Campo no debe quedar vacio")
-    .isNumeric()
-    .withMessage("El campo debe ser numérico"),
+  body("code").optional().notEmpty().withMessage("Campo no debe quedar vacio"),
   body("brand")
     .optional()
     .exists()

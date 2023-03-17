@@ -1,5 +1,5 @@
 const employeeModel = require("../models/employee-model");
-const { NotFoundError } = require("../customError/HttpError");
+const { NotFoundError } = require("../customError/Http-Error");
 const ResponseApi = require("../utils/responseApi");
 
 // ---------- Funciones de Controlador de Employee ----------
