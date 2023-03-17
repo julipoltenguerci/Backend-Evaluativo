@@ -20,13 +20,14 @@ Sistema de gestión de activos asignados a sus empleados que se encuentran traba
 
 3. Configurar las variables de entorno en archivo .env:
 
-- DB_HOST=localhost
+- DB_HOST=
 - DB_NAME=
 - DB_USER=
-- API_PORT=8000
+- API_PORT=
 
 4. Ejecutar npm install en la terminal para instalar las dependencias.
 
+# Uso
 
 5. Ejecutar npm run start:dev en la terminal para iniciar la aplicación.
 
