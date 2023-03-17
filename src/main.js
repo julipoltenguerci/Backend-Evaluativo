@@ -1,22 +1,24 @@
+// Importación de módulos y framework
 const express = require("express");
 const dotEnv = require("dotenv");
 const routes = require("./routes");
 
-//Se configuran variables de entorno
+//Configuración de variables de entorno
 dotEnv.config();
 
 //App de express
 const app = express();
 
-app.set("PORT", process.env.PORT || 8080);
+//Se establece puerto en el que se ejecutará la app
+app.set("PORT", process.env.API_PORT || 8080);
 
-//Middleware para recibir el body en formato json
+//Middleware para parsear body de req HTTP en formato JSON
 app.use(express.json({ limit: "50mb" }));
 
 //Routes
 app.use("/api/v1", routes);
 
-//Middleware para error en servidor
+//Middleware para manejo de error en toda la app
 app.use((err, req, res, next) => {
   res
     .status(err.statusCode || 500)

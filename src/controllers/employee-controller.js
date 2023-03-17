@@ -1,19 +1,22 @@
 const employeeModel = require("../models/employee-model");
-const HttpError = require("../custumError/HttpError");
+const { NotFoundError } = require("../customError/HttpError");
+const ResponseApi = require("../utils/responseApi");
 
-const url = require("url");
-const querystring = require("querystring");
+// ---------- Funciones de Controlador de Employee ----------
 
 const getAllEmployees = async (req, res, next) => {
   try {
-    const parsedUrl = url.parse(req.url);
-    const parsedQuery = querystring.parse(parsedUrl.query);
-
-    const employees = await employeeModel.getAllEmployees(parsedQuery);
+    const employees = await employeeModel.getAllEmployees(req);
     if (employees.length === 0) {
-      next(new HttpError("No se encontraron empleados disponibles.", 404));
+      next(new NotFoundError("No se encontraron empleados disponibles."));
     } else {
-      res.json({ data: employees });
+      res.json(
+        new ResponseApi(
+          true,
+          "Se encontraron los siguientes empleados",
+          employees
+        )
+      );
     }
   } catch (err) {
     next(err);
@@ -22,11 +25,18 @@ const getAllEmployees = async (req, res, next) => {
 
 const getEmployeeById = async (req, res, next) => {
   try {
-    const employee = await employeeModel.getEmployeeById(req.params.idE);
+    const { idE } = req.params;
+    const employee = await employeeModel.getEmployeeById(idE);
     if (employee.length === 0) {
-      next(new HttpError("No se encontró empleado con ese id.", 404));
+      next(new NotFoundError(`No se encontró el empleado con el ID ${idE}`));
     } else {
-      res.json({ data: employee });
+      res.json(
+        new ResponseApi(
+          true,
+          `Se encontró el empleado con el ID  ${idE} `,
+          employee
+        )
+      );
     }
   } catch (err) {
     next(err);
@@ -36,14 +46,17 @@ const getEmployeeById = async (req, res, next) => {
 const createEmployee = async (req, res, next) => {
   try {
     const values = { ...req.body };
-    const result = await employeeModel.createEmployee(values);
-    if (result) {
-      next(
-        new HttpError(
-          `Se ha creado correctamente un nuevo empleado con ID ${result}`
+    const idCreated = await employeeModel.createEmployee(values);
+    res
+      .status(201)
+      .json(
+        new ResponseApi(
+          true,
+          `Se ha creado correctamente el empleado con ID ${idCreated}`,
+          idCreated,
+          201
         )
       );
-    }
   } catch (err) {
     next(err);
   }
@@ -52,12 +65,28 @@ const createEmployee = async (req, res, next) => {
 const updateEmployee = async (req, res, next) => {
   try {
     const { idE } = req.params;
-    const result = await employeeModel.updateEmployee(req.body, idE);
-    if (result) {
-      next(
-        new HttpError(`Se ha editado correctamente el empleado con ID ${idE}`)
-      );
+    let empleadoToUpdate = await employeeModel.getEmployeeById(idE);
+    console.log(empleadoToUpdate);
+    if (empleadoToUpdate.length == 0) {
+      res
+        .status(404)
+        .json(
+          new ResponseApi(
+            false,
+            `No se ha encontrado el empleado con el ID ${idE}`,
+            idE,
+            404
+          )
+        );
     }
+    await employeeModel.updateEmployee(req.body, idE);
+    res.json(
+      new ResponseApi(
+        true,
+        `Se ha editado correctamente el empleado con ID ${idE}`,
+        idE
+      )
+    );
   } catch (err) {
     next(err);
   }
@@ -66,12 +95,27 @@ const updateEmployee = async (req, res, next) => {
 const deleteEmployee = async (req, res, next) => {
   try {
     const { idE } = req.params;
-    const result = await employeeModel.deleteEmployee(idE);
-    if (result) {
-      next(
-        new HttpError(`Se ha eliminado correctamente el empleado con ID ${idE}`)
-      );
+    let empleadoToUpdate = await employeeModel.getEmployeeById(idE);
+    if (empleadoToUpdate.length == 0) {
+      res
+        .status(404)
+        .json(
+          new ResponseApi(
+            false,
+            `No se ha encontrado el empleado con el ID ${idE}`,
+            idE,
+            404
+          )
+        );
     }
+    const result = await employeeModel.deleteEmployee(idE);
+    res.json(
+      new ResponseApi(
+        true,
+        `Se ha eliminado correctamente el empleado con ID ${idE}`,
+        idE
+      )
+    );
   } catch (err) {
     next(err);
   }

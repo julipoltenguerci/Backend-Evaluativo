@@ -1,7 +1,7 @@
 const { body } = require("express-validator");
 const validateResults = require("../utils/handleValidator");
 
-//middlewares para validar creación y actualización de employees
+// Middlewares para validar creación y actualización de employees
 
 const createEmployeeValidator = [
   body("first_name")

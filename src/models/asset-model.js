@@ -1,8 +1,33 @@
+//Importación de conexión y configuración de la base de datos
 const connection = require("../config/db-config");
 
-const getAllAssets = async () => {
-  const sentence = "SELECT * FROM assets";
-  const rows = await connection.query(sentence).spread((rows) => rows);
+// ---------- Funciones de Modelo Asset ----------
+
+const getAllAssets = async (req) => {
+  const {
+    page = 1,
+    limit = "10",
+    orderBy = "id_asset",
+    direction = "ASC",
+    ...filters
+  } = req.query;
+
+  // Offset: Cálculo de tamaño de pagina
+  const offset = (page - 1) * limit;
+
+  const where =
+    filters &&
+    Object.entries(filters)
+      .map(([key, value]) => `${key} = "${value}"`)
+      .join(" AND ");
+
+  const finalQuery = `SELECT * FROM assets ${
+    where ? `WHERE ${where}` : ""
+  } ORDER BY ${orderBy} ${direction} 
+  LIMIT ${limit} OFFSET ${offset}`;
+
+  const [rows] = await connection.query(finalQuery);
+
   return rows;
 };
 
@@ -13,8 +38,7 @@ const getAssetById = async (idA) => {
 };
 
 const getAssetsByEmployeeId = async (idE) => {
-  //console.log("test", idE);
-  const sentence = `SELECT * FROM assets a JOIN employees e ON a.id_employee = e.id_employee WHERE a.id_employee= ${idE}`;
+  const sentence = `SELECT * FROM assets a WHERE a.id_employee= ${idE}`;
   const rows = await connection.query(sentence).spread((rows) => rows);
   return rows;
 };
@@ -22,16 +46,14 @@ const getAssetsByEmployeeId = async (idE) => {
 const createAsset = async (values) => {
   const { name, type, code, brand, description, purchase_date, id_employee } =
     values;
-
   const result = await connection
     .query(
       "INSERT INTO assets(name, type, code, brand, description, purchase_date, id_employee ) values(?,?,?,?,?,?,?)",
       [name, type, code, brand, description, purchase_date, id_employee]
     )
     .spread((result) => result);
-  //console.log(result);
+
   return result.insertId;
-  //return result[0].insertId;
 };
 const updateAsset = async (req, idA) => {
   const body = Object.entries(req);
@@ -55,20 +77,11 @@ const deleteAsset = async (idA) => {
   return result.affectedRows;
 };
 
-// const deleteAssetsByEmployeeId = async (idA) => {
-//   const result = await connection
-//     .query("DELETE * FROM assets a WHERE a.id_employee = ?", [id])
-//     .spread((result) => result);
-
-//   return result;
-// };
-
 module.exports = {
   getAllAssets,
   getAssetById,
   getAssetsByEmployeeId,
   deleteAsset,
-  //deleteAssetsByEmployeeId: deleteAssetsByEmployeeId,
   createAsset,
   updateAsset,
 };

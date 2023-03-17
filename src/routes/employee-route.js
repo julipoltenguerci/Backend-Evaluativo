@@ -1,6 +1,7 @@
 const employeeRouter = require("express").Router();
 const employeeController = require("../controllers/employee-controller");
 
+//Importación de Middleware para validaciones
 const {
   createEmployeeValidator,
   updateEmployeeValidator,
