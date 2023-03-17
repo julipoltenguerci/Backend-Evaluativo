@@ -5,6 +5,13 @@ Segundo Proyecto - Akademi 2023 - Vortex-IT
 
 Sistema de gestión de activos asignados a sus empleados que se encuentran trabajando de manera remota y los activos se encuentran distribuidos por todo el país.
 
+# Tecnologías Principales utilizadas:
+
+
+- Node.js
+- Express
+- MySQL
+
 # Instalación
 
 1. Clonar este repositorio
